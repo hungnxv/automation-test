@@ -1,4 +1,4 @@
-package edu.hcmut.software_testing.project3.nxvhung.part_a.auto_test;
+package edu.hcmut.software_testing.project3.nxvhung.part_a;
 
 import java.util.Objects;
 import org.junit.After;
