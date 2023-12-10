@@ -4,10 +4,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import edu.hcmut.software_testing.project3.util.ReadExcelFile;
+import java.io.InputStream;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,15 +22,23 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 
 public class AddStudentInfoDataDriven {
+
+  private static final String MONTH_OPTION = "//option[. = '%s']";
+  private static final String DAY_OPTION = "//option[. = '%s']";
+  private static final String YEAR_OPTION = "//option[. = '2010']";
+  private static final String FULL_NAME = "%s %s";
+  private static final String EMPTY_STRING = "";
   private WebDriver driver;
   private Map<String, Object> vars;
   JavascriptExecutor js;
 
 
-  @Before
+  @BeforeTest
   public void setUp() {
     driver = new ChromeDriver();
     js = (JavascriptExecutor) driver;
@@ -42,11 +52,9 @@ public class AddStudentInfoDataDriven {
         .until(ExpectedConditions.elementToBeClickable(By.cssSelector(".menu-top > .Students")));
     studentMenu.click();
 
-    WebElement addAStudentMenu = (new WebDriverWait(driver, Duration.ofSeconds(10)))
-        .until(ExpectedConditions.elementToBeClickable(By.linkText("Add a Student")));
-    addAStudentMenu.click();
 
   }
+
   @After
   public void tearDown() {
     driver.quit();
@@ -54,6 +62,7 @@ public class AddStudentInfoDataDriven {
 
   /**
    * Normal case
+   *
    * @throws InterruptedException
    */
 
@@ -99,24 +108,23 @@ public class AddStudentInfoDataDriven {
     driver.findElement(By.id("monthSelect1")).click();
     {
       WebElement dropdown = driver.findElement(By.id("monthSelect1"));
-      dropdown.findElement(By.xpath("//option[. = 'December']")).click();
+      dropdown.findElement(By.xpath(MONTH_OPTION)).click();
     }
     driver.findElement(By.id("daySelect1")).click();
     {
       WebElement dropdown = driver.findElement(By.id("daySelect1"));
-      dropdown.findElement(By.xpath("//option[. = '7']")).click();
+      dropdown.findElement(By.xpath(DAY_OPTION)).click();
     }
     driver.findElement(By.id("yearSelect1")).click();
     {
       WebElement dropdown = driver.findElement(By.id("yearSelect1"));
-      dropdown.findElement(By.xpath("//option[. = '2010']")).click();
+      dropdown.findElement(By.xpath(YEAR_OPTION)).click();
     }
     driver.findElement(By.cssSelector(".center > .button-primary")).click();
     js.executeScript("window.scrollTo(0,0)");
 
-
     WebElement cancelCurrentButton = (new WebDriverWait(driver, Duration.ofSeconds(6)))
-    .until(ExpectedConditions.elementToBeClickable(By.cssSelector(".bigger")));
+        .until(ExpectedConditions.elementToBeClickable(By.cssSelector(".bigger")));
     cancelCurrentButton.click();
     WebElement submitButton = null;
 
@@ -136,20 +144,18 @@ public class AddStudentInfoDataDriven {
       }
     }
 
-
     WebElement studentTable = (new WebDriverWait(driver, Duration.ofSeconds(10)))
         .until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Group by Family")));
 
-    assertTrue(driver.findElements(By.linkText("Hung NguyenXuan Vinh")).size() != 0) ;
+    assertTrue(driver.findElements(By.linkText("Hung NguyenXuan Vinh")).size() != 0);
 
   }
 
   /**
-   * The "RosarioIS ID" already exists
-   * run tC001001 to have duplicate data
+   * The "RosarioIS ID" already exists run tC001001 to have duplicate data
    */
   @Test
-  public void tC001002()  {
+  public void tC001002() {
 
     WebElement studentsFirstName = (new WebDriverWait(driver, Duration.ofSeconds(6)))
         .until(ExpectedConditions.elementToBeClickable(By.id("studentsFIRST_NAME")));
@@ -191,21 +197,20 @@ public class AddStudentInfoDataDriven {
     driver.findElement(By.id("monthSelect1")).click();
     {
       WebElement dropdown = driver.findElement(By.id("monthSelect1"));
-      dropdown.findElement(By.xpath("//option[. = 'December']")).click();
+      dropdown.findElement(By.xpath(MONTH_OPTION)).click();
     }
     driver.findElement(By.id("daySelect1")).click();
     {
       WebElement dropdown = driver.findElement(By.id("daySelect1"));
-      dropdown.findElement(By.xpath("//option[. = '7']")).click();
+      dropdown.findElement(By.xpath(DAY_OPTION)).click();
     }
     driver.findElement(By.id("yearSelect1")).click();
     {
       WebElement dropdown = driver.findElement(By.id("yearSelect1"));
-      dropdown.findElement(By.xpath("//option[. = '2010']")).click();
+      dropdown.findElement(By.xpath(YEAR_OPTION)).click();
     }
     driver.findElement(By.cssSelector(".center > .button-primary")).click();
     js.executeScript("window.scrollTo(0,0)");
-
 
     WebElement errorText = (new WebDriverWait(driver, Duration.ofSeconds(10)))
         .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".error")));
@@ -216,11 +221,10 @@ public class AddStudentInfoDataDriven {
   }
 
   /**
-   * Duplicate username
-   * run tC001001 to have duplicate data
+   * Duplicate username run tC001001 to have duplicate data
    */
   @Test
-  public void tC001003()  {
+  public void tC001003() {
 
     WebElement studentsFirstName = (new WebDriverWait(driver, Duration.ofSeconds(6)))
         .until(ExpectedConditions.elementToBeClickable(By.id("studentsFIRST_NAME")));
@@ -262,22 +266,20 @@ public class AddStudentInfoDataDriven {
     driver.findElement(By.id("monthSelect1")).click();
     {
       WebElement dropdown = driver.findElement(By.id("monthSelect1"));
-      dropdown.findElement(By.xpath("//option[. = 'December']")).click();
+      dropdown.findElement(By.xpath(MONTH_OPTION)).click();
     }
     driver.findElement(By.id("daySelect1")).click();
     {
       WebElement dropdown = driver.findElement(By.id("daySelect1"));
-      dropdown.findElement(By.xpath("//option[. = '7']")).click();
+      dropdown.findElement(By.xpath(DAY_OPTION)).click();
     }
     driver.findElement(By.id("yearSelect1")).click();
     {
       WebElement dropdown = driver.findElement(By.id("yearSelect1"));
-      dropdown.findElement(By.xpath("//option[. = '2010']")).click();
+      dropdown.findElement(By.xpath(YEAR_OPTION)).click();
     }
     driver.findElement(By.cssSelector(".center > .button-primary")).click();
     js.executeScript("window.scrollTo(0,0)");
-
-
 
     WebElement errorText = (new WebDriverWait(driver, Duration.ofSeconds(10)))
         .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".error")));
@@ -291,7 +293,7 @@ public class AddStudentInfoDataDriven {
    * run tC001001 to have duplicate data
    */
   @Test
-  public void tC001004()  {
+  public void tC001004() {
 
     WebElement studentsFirstName = (new WebDriverWait(driver, Duration.ofSeconds(6)))
         .until(ExpectedConditions.elementToBeClickable(By.id("studentsFIRST_NAME")));
@@ -316,7 +318,6 @@ public class AddStudentInfoDataDriven {
 
     driver.findElement(By.cssSelector(".center > .button-primary")).click();
     js.executeScript("window.scrollTo(0,0)");
-
 
     WebElement score2 = driver.findElement(By.cssSelector(".score2"));
     assertTrue(score2.isDisplayed());
@@ -377,18 +378,17 @@ public class AddStudentInfoDataDriven {
       }
     }
 
-
     WebElement studentTable = (new WebDriverWait(driver, Duration.ofSeconds(10)))
         .until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Group by Family")));
 
-    assertTrue(driver.findElements(By.linkText("Hung NguyenXuan Vinh")).size() != 0) ;
-
+    assertTrue(driver.findElements(By.linkText("Hung NguyenXuan Vinh")).size() != 0);
 
 
   }
 
   /**
    * In vaid birthdate 1
+   *
    * @throws InterruptedException
    */
   @Test
@@ -424,7 +424,7 @@ public class AddStudentInfoDataDriven {
     driver.findElement(By.id("yearSelect1")).click();
     {
       WebElement dropdown = driver.findElement(By.id("yearSelect1"));
-      dropdown.findElement(By.xpath("//option[. = '2010']")).click();
+      dropdown.findElement(By.xpath(YEAR_OPTION)).click();
     }
 
     driver.findElement(By.cssSelector(".center > .button-primary")).click();
@@ -451,15 +451,12 @@ public class AddStudentInfoDataDriven {
       }
     }
 
-
     WebElement studentTable = (new WebDriverWait(driver, Duration.ofSeconds(10)))
         .until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Group by Family")));
     List<WebElement> link = driver.findElements(By.linkText("Hung NguyenVan Vinh"));
 
-    assertTrue(driver.findElements(By.linkText("Hung NguyenVan Vinh")).size() != 0) ;
+    assertTrue(driver.findElements(By.linkText("Hung NguyenVan Vinh")).size() != 0);
     link.get(0).click();
-
-
 
     WebElement birthDate = (new WebDriverWait(driver, Duration.ofSeconds(10)))
         .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".proper-date")));
@@ -468,12 +465,10 @@ public class AddStudentInfoDataDriven {
   }
 
   /**
-   * Future birthdate
-   * Choose the date in future, the system should show error message
-   *
+   * Future birthdate Choose the date in future, the system should show error message
    */
   @Test
-  public void tC001007()  {
+  public void tC001007() {
 
     WebElement studentsFirstName = (new WebDriverWait(driver, Duration.ofSeconds(6)))
         .until(ExpectedConditions.elementToBeClickable(By.id("studentsFIRST_NAME")));
@@ -505,34 +500,142 @@ public class AddStudentInfoDataDriven {
     driver.findElement(By.id("yearSelect1")).click();
     {
       WebElement dropdown = driver.findElement(By.id("yearSelect1"));
-      dropdown.findElement(By.xpath("//option[. = '2010']")).click();
+      dropdown.findElement(By.xpath(YEAR_OPTION)).click();
     }
 
     driver.findElement(By.cssSelector(".center > .button-primary")).click();
     js.executeScript("window.scrollTo(0,0)");
 
-
-
     assertTrue(driver.findElements(By.cssSelector(".error")).size() != 0);
   }
 
-  @DataProvider(name="testdata")
-  public Object[][] testDataExample(){
-    ReadExcelFile configuration = new ReadExcelFile("/Users/hung.nguyen04/Downloads/addstudent.xlsx");
-    int rows = configuration.getRowCount(0);
-    Object[][] signin_credentials = new Object[rows][2];
 
-    for(int i=0;i<rows;i++)
-    {
-      signin_credentials[i][0] = configuration.getData(0, i, 0);
-      signin_credentials[i][1] = configuration.getData(1, i, 1);
-      signin_credentials[i][1] = configuration.getData(2, i, 1);
-      signin_credentials[i][1] = configuration.getData(3, i, 1);
-      signin_credentials[i][1] = configuration.getData(4, i, 1);
+  @org.testng.annotations.Test(dataProvider = "testdata")
+  public void addStudent(String firstname, String lastname, String id, String username, String password, String day, String month, String year,
+      String expectedResult) throws InterruptedException {
 
+    WebElement addAStudentMenu = (new WebDriverWait(driver, Duration.ofSeconds(10)))
+        .until(ExpectedConditions.elementToBeClickable(By.linkText("Add a Student")));
+    addAStudentMenu.click();
 
+    WebElement studentsFirstName = (new WebDriverWait(driver, Duration.ofSeconds(6)))
+        .until(ExpectedConditions.elementToBeClickable(By.id("studentsFIRST_NAME")));
+    studentsFirstName.click();
+    studentsFirstName.sendKeys(firstname);
+
+    WebElement studentsLastName = driver.findElement(By.id("studentsLAST_NAME"));
+    studentsLastName.click();
+    studentsLastName.sendKeys(lastname);
+    if (!EMPTY_STRING.equalsIgnoreCase(id)) {
+      driver.findElement(By.id("assign_student_id")).click();
+      driver.findElement(By.id("assign_student_id")).sendKeys(id);
+    }
+
+    if (!EMPTY_STRING.equalsIgnoreCase(username)) {
+      driver.findElement(By.id("studentsUSERNAME")).sendKeys(username);
+      driver.findElement(By.id("studentsPASSWORD")).sendKeys(password);
+    }
+
+    if (!EMPTY_STRING.equalsIgnoreCase(month)) {
+      driver.findElement(By.id("monthSelect1")).click();
+      {
+        WebElement dropdown = driver.findElement(By.id("monthSelect1"));
+        dropdown.findElement(By.xpath(String.format(MONTH_OPTION, month))).click();
+      }
+    }
+
+    if (!EMPTY_STRING.equalsIgnoreCase(day)) {
+      driver.findElement(By.id("daySelect1")).click();
+      {
+        WebElement dropdown = driver.findElement(By.id("daySelect1"));
+        dropdown.findElement(By.xpath(String.format(DAY_OPTION, day))).click();
+      }
+    }
+
+    if (!EMPTY_STRING.equalsIgnoreCase(year)) {
+      driver.findElement(By.id("yearSelect1")).click();
+      {
+        WebElement dropdown = driver.findElement(By.id("yearSelect1"));
+        dropdown.findElement(By.xpath(String.format(YEAR_OPTION, year))).click();
+      }
+    }
+
+    driver.findElement(By.cssSelector(".center > .button-primary")).click();
+    js.executeScript("window.scrollTo(0,0)");
+
+    if (Boolean.TRUE.toString().equalsIgnoreCase(expectedResult)) {
+      WebElement cancelCurrentButton = (new WebDriverWait(driver, Duration.ofSeconds(6)))
+          .until(ExpectedConditions.elementToBeClickable(By.cssSelector(".bigger")));
+      cancelCurrentButton.click();
+      WebElement submitButton = null;
+
+      int maxAttempts = 5;
+      int attempt = 0;
+
+      while (attempt < maxAttempts) {
+        try {
+          // Your code to locate and interact with the element
+          submitButton = driver.findElement(By.cssSelector(".button-primary"));
+          submitButton.click();
+          break;  // Break out of the loop if the interaction was successful
+        } catch (StaleElementReferenceException e) {
+          // Retry if StaleElementReferenceException occurs
+          attempt++;
+          Thread.sleep(3000);
+        }
+      }
+
+      WebElement studentTable = (new WebDriverWait(driver, Duration.ofSeconds(10)))
+          .until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Group by Family")));
+      assertTrue(driver.findElements(By.linkText(String.format(FULL_NAME, firstname, lastname))).size() != 0);
+
+    } else {
+      WebElement errorText = (new WebDriverWait(driver, Duration.ofSeconds(10)))
+          .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".error")));
+      List<WebElement> errorElements = driver.findElements(By.cssSelector(".error"));
+      boolean errorMessageShow = errorElements.size() != 0 && errorElements.get(0).isDisplayed();
+
+      List<WebElement> passwordErrors = driver.findElements(By.cssSelector(".error"));
+      boolean passwordErrorShow = passwordErrors.size() != 0 && passwordErrors.get(0).isDisplayed();
+      assertTrue(errorMessageShow || passwordErrorShow);
 
     }
-    return signin_credentials;
+  }
+
+  @DataProvider(name = "testdata")
+  public Object[][] addStudentData() {
+
+    InputStream is = AddStudentInfoDataDriven.class.getResourceAsStream("/addstudent.xlsx");
+
+    ReadExcelFile configuration = new ReadExcelFile(is);
+    int rows = configuration.getRowCount(0);
+    Object[][] addStudentData = new Object[rows][9];
+
+    for (int i = 0; i < rows; i++) {
+      addStudentData[i][0] = configuration.getData(0, i, 0);
+      addStudentData[i][1] = configuration.getData(0, i, 1);
+      addStudentData[i][2] = configuration.getData(0, i, 2);
+      addStudentData[i][3] = configuration.getData(0, i, 3);
+      addStudentData[i][4] = configuration.getData(0, i, 4);
+      addStudentData[i][5] = configuration.getData(0, i, 5);
+      addStudentData[i][6] = configuration.getData(0, i, 6);
+      addStudentData[i][7] = configuration.getData(0, i, 7);
+      addStudentData[i][8] = configuration.getData(0, i, 8);
+
+    }
+    return addStudentData;
+  }
+
+  @AfterMethod
+  void ProgramTermination() {
+//    driver.quit();
+  }
+
+  @Test
+  public void tC001008() {
+    InputStream is = AddStudentInfoDataDriven.class.getResourceAsStream("/addstudent.xlsx");
+
+    ReadExcelFile configuration = new ReadExcelFile(is);
+    configuration.getData(0, 0, 0);
   }
 }
