@@ -64,7 +64,7 @@ public class EditStudentInfo {
    * Normal case, update Firstname run tC001001 to have edit data
    */
   @Test
-  public void tC001001() {
+  public void tC002001() {
 
     driver.findElements(By.cssSelector(".onclick")).get(0).click();
 
@@ -87,7 +87,7 @@ public class EditStudentInfo {
    * existing username run tC001001 to have edit data
    */
   @Test
-  public void tC001002() {
+  public void tC002002() {
 
     driver.findElements(By.cssSelector(".onclick")).get(1).click();
     WebElement username = driver.findElement(By.id("studentsUSERNAME"));
@@ -107,7 +107,7 @@ public class EditStudentInfo {
    * run tC001001 to update data
    */
   @Test
-  public void tC001003() {
+  public void tC002003() {
 
     driver.findElements(By.cssSelector(".onclick")).get(2).click();
     WebElement password = driver.findElement(By.id("studentsPASSWORD"));
@@ -126,7 +126,7 @@ public class EditStudentInfo {
    * the password is weak at orange level, but admin still can save the student
    */
   @Test
-  public void tC001004()  {
+  public void tC002004()  {
 
     driver.findElements(By.cssSelector(".onclick")).get(2).click();
     WebElement password = driver.findElement(By.id("studentsPASSWORD"));
@@ -149,7 +149,7 @@ public class EditStudentInfo {
    *
    */
   @Test
-  public void tC001005()  {
+  public void tC002005()  {
 
     driver.findElements(By.cssSelector(".onclick")).get(6).click();
     driver.findElement(By.id("monthSelect1")).click();
@@ -181,7 +181,7 @@ public class EditStudentInfo {
    * Future birthdate Choose the date in future, the system should show error message
    */
   @Test
-  public void tC001006() {
+  public void tC002006() {
 
 
     driver.findElements(By.cssSelector(".onclick")).get(6).click();
