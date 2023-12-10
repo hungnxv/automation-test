@@ -116,9 +116,9 @@ public class EditStudentInfo {
 
     driver.findElement(By.cssSelector(".center > .button-primary")).click();
     js.executeScript("window.scrollTo(0,0)");
-
-    WebElement score2 = driver.findElement(By.cssSelector(".score2"));
-    assertTrue(score2.isDisplayed());
+    WebElement score1 = (new WebDriverWait(driver, Duration.ofSeconds(10)))
+        .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".score1")));
+    assertTrue(score1.isDisplayed());
 
   }
 
@@ -126,60 +126,20 @@ public class EditStudentInfo {
    * the password is weak at orange level, but admin still can save the student
    */
   @Test
-  public void tC001005() throws InterruptedException {
+  public void tC001004()  {
 
-    WebElement studentsFirstName = (new WebDriverWait(driver, Duration.ofSeconds(6)))
-        .until(ExpectedConditions.elementToBeClickable(By.id("studentsFIRST_NAME")));
-    studentsFirstName.click();
-    studentsFirstName.sendKeys("Hung");
+    driver.findElements(By.cssSelector(".onclick")).get(2).click();
+    WebElement password = driver.findElement(By.id("studentsPASSWORD"));
+    password.clear();
+    password.sendKeys("H@ngnxv");
 
-    WebElement studentsMiddleName = driver.findElement(By.id("studentsMIDDLE_NAME"));
-    studentsMiddleName.click();
-    studentsMiddleName.sendKeys("NguyenXuan");
-    WebElement studentsLastName = driver.findElement(By.id("studentsLAST_NAME"));
-    studentsLastName.click();
-    studentsLastName.sendKeys("Vinh");
-    driver.findElement(By.id("studentsNAME_SUFFIX")).click();
-    {
-      WebElement dropdown = driver.findElement(By.id("studentsNAME_SUFFIX"));
-      dropdown.findElement(By.xpath("//option[. = 'Jr']")).click();
-    }
-    driver.findElement(By.id("assign_student_id")).click();
-    driver.findElement(By.id("assign_student_id")).sendKeys("123456");
-    driver.findElement(By.id("studentsUSERNAME")).sendKeys("hungnxv");
-    driver.findElement(By.id("studentsPASSWORD")).sendKeys("H@ngnxv");
-    WebElement score2 = (new WebDriverWait(driver, Duration.ofSeconds(10)))
-        .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".score2")));
-
-    assertTrue(score2.isDisplayed());
     driver.findElement(By.cssSelector(".center > .button-primary")).click();
     js.executeScript("window.scrollTo(0,0)");
 
-    WebElement cancelCurrentButton = (new WebDriverWait(driver, Duration.ofSeconds(6)))
-        .until(ExpectedConditions.elementToBeClickable(By.cssSelector(".bigger")));
-    cancelCurrentButton.click();
-    WebElement submitButton = null;
+    WebElement updated = (new WebDriverWait(driver, Duration.ofSeconds(10)))
+        .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".updated")));
 
-    int maxAttempts = 5;
-    int attempt = 0;
-
-    while (attempt < maxAttempts) {
-      try {
-        // Your code to locate and interact with the element
-        submitButton = driver.findElement(By.cssSelector(".button-primary"));
-        submitButton.click();
-        break;  // Break out of the loop if the interaction was successful
-      } catch (StaleElementReferenceException e) {
-        // Retry if StaleElementReferenceException occurs
-        attempt++;
-        Thread.sleep(3000);
-      }
-    }
-
-    WebElement studentTable = (new WebDriverWait(driver, Duration.ofSeconds(10)))
-        .until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Group by Family")));
-
-    assertTrue(driver.findElements(By.linkText("Hung NguyenXuan Vinh")).size() != 0);
+    assertTrue(updated.isDisplayed());
 
 
   }
@@ -187,28 +147,11 @@ public class EditStudentInfo {
   /**
    * In vaid birthdate 1
    *
-   * @throws InterruptedException
    */
   @Test
-  public void tC001006() throws InterruptedException {
+  public void tC001005()  {
 
-    WebElement studentsFirstName = (new WebDriverWait(driver, Duration.ofSeconds(6)))
-        .until(ExpectedConditions.elementToBeClickable(By.id("studentsFIRST_NAME")));
-    studentsFirstName.click();
-    studentsFirstName.sendKeys("Hung");
-
-    WebElement studentsMiddleName = driver.findElement(By.id("studentsMIDDLE_NAME"));
-    studentsMiddleName.click();
-    studentsMiddleName.sendKeys("NguyenVan");
-    WebElement studentsLastName = driver.findElement(By.id("studentsLAST_NAME"));
-    studentsLastName.click();
-    studentsLastName.sendKeys("Vinh");
-    driver.findElement(By.id("studentsNAME_SUFFIX")).click();
-    {
-      WebElement dropdown = driver.findElement(By.id("studentsNAME_SUFFIX"));
-      dropdown.findElement(By.xpath("//option[. = 'Jr']")).click();
-    }
-    driver.findElement(By.id("assign_student_id")).click();
+    driver.findElements(By.cssSelector(".onclick")).get(6).click();
     driver.findElement(By.id("monthSelect1")).click();
     {
       WebElement dropdown = driver.findElement(By.id("monthSelect1"));
@@ -227,38 +170,10 @@ public class EditStudentInfo {
 
     driver.findElement(By.cssSelector(".center > .button-primary")).click();
     js.executeScript("window.scrollTo(0,0)");
+    WebElement updated = (new WebDriverWait(driver, Duration.ofSeconds(10)))
+        .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".updated")));
 
-    WebElement cancelCurrentButton = (new WebDriverWait(driver, Duration.ofSeconds(6)))
-        .until(ExpectedConditions.elementToBeClickable(By.cssSelector(".bigger")));
-    cancelCurrentButton.click();
-    WebElement submitButton = null;
-
-    int maxAttempts = 5;
-    int attempt = 0;
-
-    while (attempt < maxAttempts) {
-      try {
-        // Your code to locate and interact with the element
-        submitButton = driver.findElement(By.cssSelector(".button-primary"));
-        submitButton.click();
-        break;  // Break out of the loop if the interaction was successful
-      } catch (StaleElementReferenceException e) {
-        // Retry if StaleElementReferenceException occurs
-        attempt++;
-        Thread.sleep(3000);
-      }
-    }
-
-    WebElement studentTable = (new WebDriverWait(driver, Duration.ofSeconds(10)))
-        .until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Group by Family")));
-    List<WebElement> link = driver.findElements(By.linkText("Hung NguyenVan Vinh"));
-
-    assertTrue(driver.findElements(By.linkText("Hung NguyenVan Vinh")).size() != 0);
-    link.get(0).click();
-
-    WebElement birthDate = (new WebDriverWait(driver, Duration.ofSeconds(10)))
-        .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".proper-date")));
-    assertEquals("February 28 2010", birthDate.getText());
+    assertTrue(updated.isDisplayed());
 
   }
 
@@ -266,25 +181,10 @@ public class EditStudentInfo {
    * Future birthdate Choose the date in future, the system should show error message
    */
   @Test
-  public void tC001007() {
+  public void tC001006() {
 
-    WebElement studentsFirstName = (new WebDriverWait(driver, Duration.ofSeconds(6)))
-        .until(ExpectedConditions.elementToBeClickable(By.id("studentsFIRST_NAME")));
-    studentsFirstName.click();
-    studentsFirstName.sendKeys("Hung");
 
-    WebElement studentsMiddleName = driver.findElement(By.id("studentsMIDDLE_NAME"));
-    studentsMiddleName.click();
-    studentsMiddleName.sendKeys("Van");
-    WebElement studentsLastName = driver.findElement(By.id("studentsLAST_NAME"));
-    studentsLastName.click();
-    studentsLastName.sendKeys("Vinh");
-    driver.findElement(By.id("studentsNAME_SUFFIX")).click();
-    {
-      WebElement dropdown = driver.findElement(By.id("studentsNAME_SUFFIX"));
-      dropdown.findElement(By.xpath("//option[. = 'Jr']")).click();
-    }
-    driver.findElement(By.id("assign_student_id")).click();
+    driver.findElements(By.cssSelector(".onclick")).get(6).click();
     driver.findElement(By.id("monthSelect1")).click();
     {
       WebElement dropdown = driver.findElement(By.id("monthSelect1"));
@@ -298,11 +198,14 @@ public class EditStudentInfo {
     driver.findElement(By.id("yearSelect1")).click();
     {
       WebElement dropdown = driver.findElement(By.id("yearSelect1"));
-      dropdown.findElement(By.xpath("//option[. = '2010']")).click();
+      dropdown.findElement(By.xpath("//option[. = '2030']")).click();
     }
 
     driver.findElement(By.cssSelector(".center > .button-primary")).click();
     js.executeScript("window.scrollTo(0,0)");
+    WebElement updated = (new WebDriverWait(driver, Duration.ofSeconds(10)))
+        .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".updated")));
+
 
     assertTrue(driver.findElements(By.cssSelector(".error")).size() != 0);
   }
