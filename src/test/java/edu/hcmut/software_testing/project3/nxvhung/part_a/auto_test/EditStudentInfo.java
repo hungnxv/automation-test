@@ -21,6 +21,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class EditStudentInfo {
+
   private WebDriver driver;
   private Map<String, Object> vars;
   JavascriptExecutor js;
@@ -39,243 +40,60 @@ public class EditStudentInfo {
         .until(ExpectedConditions.elementToBeClickable(By.cssSelector(".menu-top > .Students")));
     studentMenu.click();
 
-    WebElement addAStudentMenu = (new WebDriverWait(driver, Duration.ofSeconds(10)))
-        .until(ExpectedConditions.elementToBeClickable(By.linkText("Add a Student")));
-    addAStudentMenu.click();
-    addNewStudent();
+    WebElement findStudentButton = (new WebDriverWait(driver, Duration.ofSeconds(10)))
+        .until(ExpectedConditions.elementToBeClickable(By.cssSelector(".button-primary")));
+    findStudentButton.click();
+
+    (new WebDriverWait(driver, Duration.ofSeconds(10)))
+        .until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Group by Family")));
+
+    driver.findElement(By.linkText("Hung NguyenXuan Vinh")).click();
+
+    (new WebDriverWait(driver, Duration.ofSeconds(6)))
+        .until(ExpectedConditions.visibilityOfElementLocated(By.id("divstudent_name")));
 
   }
+
   @After
   public void tearDown() {
 //    driver.quit();
   }
 
-  /**
-   * Normal case
-   * @throws InterruptedException
-   */
-
-  @Test
-  public void addNewStudent() throws InterruptedException {
-    WebElement studentsFirstName = (new WebDriverWait(driver, Duration.ofSeconds(6)))
-        .until(ExpectedConditions.elementToBeClickable(By.id("studentsFIRST_NAME")));
-    studentsFirstName.click();
-    studentsFirstName.sendKeys("Hung");
-
-    WebElement studentsMiddleName = driver.findElement(By.id("studentsMIDDLE_NAME"));
-    studentsMiddleName.click();
-    studentsMiddleName.sendKeys("NguyenXuan");
-    WebElement studentsLastName = driver.findElement(By.id("studentsLAST_NAME"));
-    studentsLastName.click();
-    studentsLastName.sendKeys("Vinh");
-    driver.findElement(By.id("studentsNAME_SUFFIX")).click();
-    {
-      WebElement dropdown = driver.findElement(By.id("studentsNAME_SUFFIX"));
-      dropdown.findElement(By.xpath("//option[. = 'Jr']")).click();
-    }
-    driver.findElement(By.id("assign_student_id")).click();
-    driver.findElement(By.id("assign_student_id")).sendKeys("12345");
-    driver.findElement(By.id("studentsUSERNAME")).sendKeys("hungnxv");
-    driver.findElement(By.id("studentsPASSWORD")).sendKeys("P@ssword123@!X");
-    driver.findElement(By.id("studentsCUSTOM_200000000")).click();
-    {
-      WebElement dropdown = driver.findElement(By.id("studentsCUSTOM_200000000"));
-      dropdown.findElement(By.xpath("//option[. = 'Male']")).click();
-    }
-    driver.findElement(By.id("studentsCUSTOM_200000001")).click();
-    {
-      WebElement dropdown = driver.findElement(By.id("studentsCUSTOM_200000001"));
-      dropdown.findElement(By.xpath("//option[. = 'White, Non-Hispanic']")).click();
-    }
-    driver.findElement(By.id("studentsCUSTOM_200000002")).click();
-    driver.findElement(By.id("studentsCUSTOM_200000002")).sendKeys("hung");
-    driver.findElement(By.id("studentsCUSTOM_200000005")).click();
-    {
-      WebElement dropdown = driver.findElement(By.id("studentsCUSTOM_200000005"));
-      dropdown.findElement(By.xpath("//option[. = 'English']")).click();
-    }
-    driver.findElement(By.id("monthSelect1")).click();
-    {
-      WebElement dropdown = driver.findElement(By.id("monthSelect1"));
-      dropdown.findElement(By.xpath("//option[. = 'December']")).click();
-    }
-    driver.findElement(By.id("daySelect1")).click();
-    {
-      WebElement dropdown = driver.findElement(By.id("daySelect1"));
-      dropdown.findElement(By.xpath("//option[. = '7']")).click();
-    }
-    driver.findElement(By.id("yearSelect1")).click();
-    {
-      WebElement dropdown = driver.findElement(By.id("yearSelect1"));
-      dropdown.findElement(By.xpath("//option[. = '2010']")).click();
-    }
-    driver.findElement(By.cssSelector(".center > .button-primary")).click();
-    js.executeScript("window.scrollTo(0,0)");
-
-
-    WebElement cancelCurrentButton = (new WebDriverWait(driver, Duration.ofSeconds(6)))
-    .until(ExpectedConditions.elementToBeClickable(By.cssSelector(".bigger")));
-    cancelCurrentButton.click();
-    WebElement submitButton = null;
-
-    int maxAttempts = 5;
-    int attempt = 0;
-
-    while (attempt < maxAttempts) {
-      try {
-        // Your code to locate and interact with the element
-        submitButton = driver.findElement(By.cssSelector(".button-primary"));
-        submitButton.click();
-        break;  // Break out of the loop if the interaction was successful
-      } catch (StaleElementReferenceException e) {
-        // Retry if StaleElementReferenceException occurs
-        attempt++;
-        Thread.sleep(3000);
-      }
-    }
-
-
-    WebElement studentTable = (new WebDriverWait(driver, Duration.ofSeconds(10)))
-        .until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Group by Family")));
-
-    assertTrue(driver.findElements(By.linkText("Hung NguyenXuan Vinh")).size() != 0) ;
-
-  }
 
   /**
-   * The "RosarioIS ID" already exists
-   * run tC001001 to have duplicate data
+   * Normal case, update Firstname run tC001001 to have edit data
    */
   @Test
-  public void tC001002()  {
+  public void tC001001() {
 
-    WebElement studentsFirstName = (new WebDriverWait(driver, Duration.ofSeconds(6)))
-        .until(ExpectedConditions.elementToBeClickable(By.id("studentsFIRST_NAME")));
+    driver.findElements(By.cssSelector(".onclick")).get(0).click();
+
+    WebElement studentsFirstName = driver.findElement(By.id("studentsFIRST_NAME"));
     studentsFirstName.click();
-    studentsFirstName.sendKeys("Hung");
+    studentsFirstName.clear();
+    studentsFirstName.sendKeys("Rich");
 
-    WebElement studentsMiddleName = driver.findElement(By.id("studentsMIDDLE_NAME"));
-    studentsMiddleName.click();
-    studentsMiddleName.sendKeys("NguyenXuan");
-    WebElement studentsLastName = driver.findElement(By.id("studentsLAST_NAME"));
-    studentsLastName.click();
-    studentsLastName.sendKeys("Vinh");
-    driver.findElement(By.id("studentsNAME_SUFFIX")).click();
-    {
-      WebElement dropdown = driver.findElement(By.id("studentsNAME_SUFFIX"));
-      dropdown.findElement(By.xpath("//option[. = 'Jr']")).click();
-    }
-    driver.findElement(By.id("assign_student_id")).click();
-    driver.findElement(By.id("assign_student_id")).sendKeys("12345");
-    driver.findElement(By.id("studentsUSERNAME")).sendKeys("hungnxv1");
-    driver.findElement(By.id("studentsPASSWORD")).sendKeys("P@ssword123@!X");
-    driver.findElement(By.id("studentsCUSTOM_200000000")).click();
-    {
-      WebElement dropdown = driver.findElement(By.id("studentsCUSTOM_200000000"));
-      dropdown.findElement(By.xpath("//option[. = 'Male']")).click();
-    }
-    driver.findElement(By.id("studentsCUSTOM_200000001")).click();
-    {
-      WebElement dropdown = driver.findElement(By.id("studentsCUSTOM_200000001"));
-      dropdown.findElement(By.xpath("//option[. = 'White, Non-Hispanic']")).click();
-    }
-    driver.findElement(By.id("studentsCUSTOM_200000002")).click();
-    driver.findElement(By.id("studentsCUSTOM_200000002")).sendKeys("hung");
-    driver.findElement(By.id("studentsCUSTOM_200000005")).click();
-    {
-      WebElement dropdown = driver.findElement(By.id("studentsCUSTOM_200000005"));
-      dropdown.findElement(By.xpath("//option[. = 'English']")).click();
-    }
-    driver.findElement(By.id("monthSelect1")).click();
-    {
-      WebElement dropdown = driver.findElement(By.id("monthSelect1"));
-      dropdown.findElement(By.xpath("//option[. = 'December']")).click();
-    }
-    driver.findElement(By.id("daySelect1")).click();
-    {
-      WebElement dropdown = driver.findElement(By.id("daySelect1"));
-      dropdown.findElement(By.xpath("//option[. = '7']")).click();
-    }
-    driver.findElement(By.id("yearSelect1")).click();
-    {
-      WebElement dropdown = driver.findElement(By.id("yearSelect1"));
-      dropdown.findElement(By.xpath("//option[. = '2010']")).click();
-    }
-    driver.findElement(By.cssSelector(".center > .button-primary")).click();
-    js.executeScript("window.scrollTo(0,0)");
+    driver.findElement(By.cssSelector(".button-primary")).click();
 
+    WebElement updated = (new WebDriverWait(driver, Duration.ofSeconds(10)))
+        .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".updated")));
 
-    WebElement errorText = (new WebDriverWait(driver, Duration.ofSeconds(10)))
-        .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".error")));
-
-    assertEquals(errorText.getText(), " Error: That RosarioSIS ID is already taken. Please select a different one.");
+    assertTrue(updated.isDisplayed());
 
 
   }
 
   /**
-   * Duplicate username
-   * run tC001001 to have duplicate data
+   * existing username run tC001001 to have edit data
    */
   @Test
-  public void tC001003()  {
+  public void tC001002() {
 
-    WebElement studentsFirstName = (new WebDriverWait(driver, Duration.ofSeconds(6)))
-        .until(ExpectedConditions.elementToBeClickable(By.id("studentsFIRST_NAME")));
-    studentsFirstName.click();
-    studentsFirstName.sendKeys("Hung");
-
-    WebElement studentsMiddleName = driver.findElement(By.id("studentsMIDDLE_NAME"));
-    studentsMiddleName.click();
-    studentsMiddleName.sendKeys("NguyenXuan");
-    WebElement studentsLastName = driver.findElement(By.id("studentsLAST_NAME"));
-    studentsLastName.click();
-    studentsLastName.sendKeys("Vinh");
-    driver.findElement(By.id("studentsNAME_SUFFIX")).click();
-    {
-      WebElement dropdown = driver.findElement(By.id("studentsNAME_SUFFIX"));
-      dropdown.findElement(By.xpath("//option[. = 'Jr']")).click();
-    }
-    driver.findElement(By.id("assign_student_id")).click();
-    driver.findElement(By.id("assign_student_id")).sendKeys("123456");
-    driver.findElement(By.id("studentsUSERNAME")).sendKeys("hungnxv");
-    driver.findElement(By.id("studentsPASSWORD")).sendKeys("P@ssword123@!X");
-    driver.findElement(By.id("studentsCUSTOM_200000000")).click();
-    {
-      WebElement dropdown = driver.findElement(By.id("studentsCUSTOM_200000000"));
-      dropdown.findElement(By.xpath("//option[. = 'Male']")).click();
-    }
-    driver.findElement(By.id("studentsCUSTOM_200000001")).click();
-    {
-      WebElement dropdown = driver.findElement(By.id("studentsCUSTOM_200000001"));
-      dropdown.findElement(By.xpath("//option[. = 'White, Non-Hispanic']")).click();
-    }
-    driver.findElement(By.id("studentsCUSTOM_200000002")).click();
-    driver.findElement(By.id("studentsCUSTOM_200000002")).sendKeys("hung");
-    driver.findElement(By.id("studentsCUSTOM_200000005")).click();
-    {
-      WebElement dropdown = driver.findElement(By.id("studentsCUSTOM_200000005"));
-      dropdown.findElement(By.xpath("//option[. = 'English']")).click();
-    }
-    driver.findElement(By.id("monthSelect1")).click();
-    {
-      WebElement dropdown = driver.findElement(By.id("monthSelect1"));
-      dropdown.findElement(By.xpath("//option[. = 'December']")).click();
-    }
-    driver.findElement(By.id("daySelect1")).click();
-    {
-      WebElement dropdown = driver.findElement(By.id("daySelect1"));
-      dropdown.findElement(By.xpath("//option[. = '7']")).click();
-    }
-    driver.findElement(By.id("yearSelect1")).click();
-    {
-      WebElement dropdown = driver.findElement(By.id("yearSelect1"));
-      dropdown.findElement(By.xpath("//option[. = '2010']")).click();
-    }
-    driver.findElement(By.cssSelector(".center > .button-primary")).click();
-    js.executeScript("window.scrollTo(0,0)");
-
-
+    driver.findElements(By.cssSelector(".onclick")).get(1).click();
+    WebElement username = driver.findElement(By.id("studentsUSERNAME"));
+    username.clear();
+    username.sendKeys("hungnxv");
+    driver.findElement(By.cssSelector(".button-primary")).click();
 
     WebElement errorText = (new WebDriverWait(driver, Duration.ofSeconds(10)))
         .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".error")));
@@ -286,35 +104,18 @@ public class EditStudentInfo {
   }
 
   /**
-   * run tC001001 to have duplicate data
+   * run tC001001 to update data
    */
   @Test
-  public void tC001004()  {
+  public void tC001003() {
 
-    WebElement studentsFirstName = (new WebDriverWait(driver, Duration.ofSeconds(6)))
-        .until(ExpectedConditions.elementToBeClickable(By.id("studentsFIRST_NAME")));
-    studentsFirstName.click();
-    studentsFirstName.sendKeys("Hung");
-
-    WebElement studentsMiddleName = driver.findElement(By.id("studentsMIDDLE_NAME"));
-    studentsMiddleName.click();
-    studentsMiddleName.sendKeys("NguyenXuan");
-    WebElement studentsLastName = driver.findElement(By.id("studentsLAST_NAME"));
-    studentsLastName.click();
-    studentsLastName.sendKeys("Vinh");
-    driver.findElement(By.id("studentsNAME_SUFFIX")).click();
-    {
-      WebElement dropdown = driver.findElement(By.id("studentsNAME_SUFFIX"));
-      dropdown.findElement(By.xpath("//option[. = 'Jr']")).click();
-    }
-    driver.findElement(By.id("assign_student_id")).click();
-    driver.findElement(By.id("assign_student_id")).sendKeys("123456");
-    driver.findElement(By.id("studentsUSERNAME")).sendKeys("hungnxv");
-    driver.findElement(By.id("studentsPASSWORD")).sendKeys("123456");
+    driver.findElements(By.cssSelector(".onclick")).get(2).click();
+    WebElement password = driver.findElement(By.id("studentsPASSWORD"));
+    password.clear();
+    password.sendKeys("123456");
 
     driver.findElement(By.cssSelector(".center > .button-primary")).click();
     js.executeScript("window.scrollTo(0,0)");
-
 
     WebElement score2 = driver.findElement(By.cssSelector(".score2"));
     assertTrue(score2.isDisplayed());
@@ -375,18 +176,17 @@ public class EditStudentInfo {
       }
     }
 
-
     WebElement studentTable = (new WebDriverWait(driver, Duration.ofSeconds(10)))
         .until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Group by Family")));
 
-    assertTrue(driver.findElements(By.linkText("Hung NguyenXuan Vinh")).size() != 0) ;
-
+    assertTrue(driver.findElements(By.linkText("Hung NguyenXuan Vinh")).size() != 0);
 
 
   }
 
   /**
    * In vaid birthdate 1
+   *
    * @throws InterruptedException
    */
   @Test
@@ -449,15 +249,12 @@ public class EditStudentInfo {
       }
     }
 
-
     WebElement studentTable = (new WebDriverWait(driver, Duration.ofSeconds(10)))
         .until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Group by Family")));
     List<WebElement> link = driver.findElements(By.linkText("Hung NguyenVan Vinh"));
 
-    assertTrue(driver.findElements(By.linkText("Hung NguyenVan Vinh")).size() != 0) ;
+    assertTrue(driver.findElements(By.linkText("Hung NguyenVan Vinh")).size() != 0);
     link.get(0).click();
-
-
 
     WebElement birthDate = (new WebDriverWait(driver, Duration.ofSeconds(10)))
         .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".proper-date")));
@@ -466,12 +263,10 @@ public class EditStudentInfo {
   }
 
   /**
-   * Future birthdate
-   * Choose the date in future, the system should show error message
-   *
+   * Future birthdate Choose the date in future, the system should show error message
    */
   @Test
-  public void tC001007()  {
+  public void tC001007() {
 
     WebElement studentsFirstName = (new WebDriverWait(driver, Duration.ofSeconds(6)))
         .until(ExpectedConditions.elementToBeClickable(By.id("studentsFIRST_NAME")));
@@ -508,8 +303,6 @@ public class EditStudentInfo {
 
     driver.findElement(By.cssSelector(".center > .button-primary")).click();
     js.executeScript("window.scrollTo(0,0)");
-
-
 
     assertTrue(driver.findElements(By.cssSelector(".error")).size() != 0);
   }

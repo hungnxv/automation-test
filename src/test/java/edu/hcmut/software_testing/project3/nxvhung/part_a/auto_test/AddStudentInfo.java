@@ -287,7 +287,7 @@ public class AddStudentInfo {
   }
 
   /**
-   * run tC001001 to have duplicate data
+   * Password warning at orange level
    */
   @Test
   public void tC001004()  {
@@ -387,7 +387,7 @@ public class AddStudentInfo {
   }
 
   /**
-   * In vaid birthdate 1
+   * Invalid birthdate 1
    * @throws InterruptedException
    */
   @Test
@@ -457,8 +457,6 @@ public class AddStudentInfo {
 
     assertTrue(driver.findElements(By.linkText("Hung NguyenVan Vinh")).size() != 0) ;
     link.get(0).click();
-
-
 
     WebElement birthDate = (new WebDriverWait(driver, Duration.ofSeconds(10)))
         .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".proper-date")));

@@ -16,7 +16,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.JavascriptExecutor;
 import java.util.*;
 
-public class BrowseCourse {
+  public class BrowseCourse {
   private WebDriver driver;
   private Map<String, Object> vars;
   JavascriptExecutor js;
@@ -83,6 +83,9 @@ public class BrowseCourse {
     assertEquals(psychologyInCinemaHeader.getText(), "Psychology in Cinema");
   }
 
+    /**
+     * students go to the course by direct link
+     */
   @Test
   public void tC003003() {
 
@@ -97,18 +100,20 @@ public class BrowseCourse {
   }
 
 
-  @Test
-  public void tC003004() {
+    /**
+     * students go to the non existing or no permission course by direct link
+     */
+    @Test
+    public void tC003004() {
 
-    driver.get("https://school.moodledemo.net/course/view.php?id=100");
-    driver.manage().window().setSize(new Dimension(1536, 816));
+      driver.get("https://school.moodledemo.net/course/view.php?id=100");
+      driver.manage().window().setSize(new Dimension(1536, 816));
 
+      WebElement courseTitle = (new WebDriverWait(driver, Duration.ofSeconds(10)))
+          .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".errormessage")));
 
-    WebElement courseTitle = (new WebDriverWait(driver, Duration.ofSeconds(10)))
-        .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".errormessage")));
-
-    assertEquals(courseTitle.getText(), "Can't find data record in database table course.");
-  }
+      assertEquals(courseTitle.getText(), "Can't find data record in database table course.");
+    }
 
 
 }
